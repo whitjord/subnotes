@@ -186,7 +186,7 @@ Markup language is to be determined, but will probably be a subset of Markdown, 
 
 ## To Be Determined
 
-* JSON or YAML. Leaning toward JSON even though YAML is easier to read. You can always convert JSON to YAML.
+* JSON or YAML. YAML is easier to read, but if we use it I'd want to make sure we don't use any features that would prevent converting it to JSON (YAML is a superset of JSON). We could just go with JSON and someone could always output it as YAML if they realy wanted to.
 * Markdown or HTML. Leaning towards Markdown.
 * Should there be a max depth of *sub-notecards* in a *notebook*. If trying to match HTML/Markdown header levels the deepest level should be 6, including the *notebook* (root level *notecard*). For example, in the following *notebook*'s path, the *notecard* "Langauges" would be at level 6.
 > "Geography" > "Continents" > "Asia" > "Countries" > "China" > "Languages"

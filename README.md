@@ -186,19 +186,19 @@ Markup language is to be determined, but will probably be a subset of Markdown, 
 
 ## To Be Determined
 
-* JSON or YAML.
-* Markdown or HTML. 
+* JSON or YAML. Leaning toward JSON even though YAML is easier to read. You can always convert JSON to YAML.
+* Markdown or HTML. Leaning towards Markdown.
 * Should there be a max depth of *sub-notecards* in a *notebook*. If trying to match HTML/Markdown header levels the deepest level should be 6, including the *notebook* (root level *notecard*). For example, in the following *notebook*'s path, the *notecard* "Langauges" would be at level 6.
 > "Geography" > "Continents" > "Asia" > "Countries" > "China" > "Languages"
 
 ## Posible Additional Features
 
-* Image support in *notes* and *flashcards*.
+* Image support in *notes* and *flashcards*. Might require using some kind of archival file format, like zip, to bundle images and JSON.
 * Special types of *notecards* that could facilite dynamic creations. For example, a "definition" *notecard* could facilitate creating two *flashcards* (A regular "What is <*subtitle*>?" question and a Jepordy style question, "What word does <*note*> describe?"). A "definition" *notecard* would also create the ability generate a glossary for a *notebook* dynamicaly. 
 * *Notebook* meta data (Author, date, version, refrences/citations, canonical/perma link, etc.).
 * *Notecard* meta data (reference/citation, type, etc).
 * Alternate versions for *flashcards* (Example: Q0: 3 + x = 9, Q1: 4 + y = 7, Q2: z + 2 + 5). Spaced Repetition programs could randomly pick one. Note: This is not the same as having multiple *flashcards* for a single *notecard*.
-* Regular Expression answers in *flashcards* for automated testing (and posibly other pattern matching or parsing methods). 
+* Regular Expression answers in *flashcards* for automated testing (and posibly other pattern matching or parsing methods too). 
 * *Notecard* links (like symbolic links in Unix or shortcuts in Windows) as long as they don't create a recursive/infinite loop. Would probably use [JSON Pointers](https://tools.ietf.org/html/rfc6901) to implement.
 * Markdown to *notebook*. A standard for converting a Markdown document into a *notebook*/*notecards*. It would probably not support flashcards. This could be used by someone taking notes in a text file using markdown and an editor of their choice. Headers would be used for *subtitles*, the header level to determine if it is a *sub-notecard*, and blank lines used to seperate *notecards* 
 

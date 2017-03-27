@@ -1,14 +1,15 @@
-# An Open Standard for Notes, Flashcards, and Spaced Repetition - Rough Draft
+# An Open Standard for Notes, Flashcards, and Spaced Repetition (Rough Draft)
+
 [![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-sa/4.0/)
 
 ## Why Notes, Flashcards, and Spaced Repetition
 
-To keep what you learn. We often spend a lot of effort teaching and learning new information, but very little on retaining that information. 
+To keep what you learn. We can spend a lot of time and effort teaching and learning new information, but very little on retaining that information, which is too often forgoten.
 
 Notes and Flashcards have strengths and weaknesses. Fortunately each of their weaknesses is overcome by the strength of the other.
 
 * __Notes__ are ideal for capturing and organizing important facts.
-* __Flashcards__, along with __Spaced Repetition__, are ideal for getting important facts into a person's long term memory. If you want to learn more about this you may want to look at the following topics on Wikipedia. 
+* __Flashcards__, along with __Spaced Repetition__, are ideal for getting important facts into a your long term memory. If you would like to learn more about this you may want to look at the following topics on Wikipedia. 
     * [Spaced Repetition](https://en.wikipedia.org/wiki/Spaced_repetition)
     * [Flashcard](https://en.wikipedia.org/wiki/Flashcard)
     * [Forgeting Curve](https://en.wikipedia.org/wiki/Forgetting_curve)
@@ -20,6 +21,7 @@ Notes and Flashcards have strengths and weaknesses. Fortunately each of their we
 * Existing open source projects focus on either *notes* or *flashcards*, but not both.
 * Existing open source projects focus mainly on a single end user application, but not a standard that could be intergrated into multiple applications.
 * Existing open source Spaced Repetition software limits what "scheduling" algorithms a person can use.
+* Propriatary solutions are, well, propriatary. 
 
 ## Definition of Terms
 
@@ -42,19 +44,32 @@ A *notecard* consists of a *subtitle* (plain text) and a *note* (markup language
 It may also contain *flashcards* and even other *notecards* (sub-*notecards*). 
 
 ```json
-{ subtitle: "France", note: " * Capital - Paris
+{
+  "subtitle": "France",
+  "note": "* Capital: Paris * Population: 66 million * Continent: Europe\n",
+  "subnotes": null,
+  "flashcards": null
+}
 ```
 
 ```yaml
+---
+subtitle: France
+note: >
+ * Capital: Paris
+ * Population: 66 million
+ * Continent: Europe
+subnotes:
+flashcards:
 
 ```
 ### Branch Notecards
 
-* Contain an ordered list of other *sub-notecards* (You can think of them like a directory or folder for other *notecards*, along with optionaly containing a *note* themselves).
+* Contain an ordered list of other *sub-notecards* (You can think of them like a directory or folder for other *notecards* (*sub-notecards*), along with optionaly containing a *note* themselves).
 * The *subtitle* value **cannot** be empty.
 * The *note* value **can** be empty.
 * Can optionally contain one or more *flashcards*.
-* TBD if sub-*notecards* are treated differently if they are *branch* or *leaf* *notecards*. For example, should sub-*leaf notecards* always be listed before sub-*branch notecards*.
+* TBD if *sub-notecards* are treated differently if they are *branch* or *leaf* *notecards*. For example, should *sub-leaf notecards* always be listed before *sub-branch notecards*.
 
 ```json
 

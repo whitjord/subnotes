@@ -6,30 +6,30 @@
 
 To keep what you learn. 
 
-We can spend a lot of time and effort teaching and learning new information, but very little on retaining that information, which is too often forgoten or lost.
+We can spend a lot of time and effort teaching and learning new information, but very little on retaining that information, which is too often forgotten or lost.
 
 Notes and Flashcards have strengths and weaknesses. Fortunately each of their weaknesses is overcome by the strength of the other.
 
 * __Notes__ are ideal for capturing and organizing important facts.
-* __Flashcards__, along with __Spaced Repetition__, are ideal for getting important facts into a your long term memory. If you would like to learn more about this you may want to look at the following topics on Wikipedia. 
+* __Flashcards__, along with __Spaced Repetition__, are ideal for getting important facts into your long term memory. If you would like to learn more about this you may want to look at the following topics on Wikipedia. 
     * [Spaced Repetition](https://en.wikipedia.org/wiki/Spaced_repetition)
     * [Flashcard](https://en.wikipedia.org/wiki/Flashcard)
     * [Forgeting Curve](https://en.wikipedia.org/wiki/Forgetting_curve)
     * [Testing Effect](https://en.wikipedia.org/wiki/Testing_effect) 
     * [Spacing Effect](https://en.wikipedia.org/wiki/Spacing_effect)
     
-## Why An Open Standard for Notes, Flashcards, and Spaced Repetition
+## Why an Open Standard for Notes, Flashcards, and Spaced Repetition
 
 * Existing open source projects focus on either *notes* or *flashcards*, but not both.
 * Existing open source projects focus mainly on a single end user application, but not a standard that could be intergrated into multiple applications.
 * Existing open source Spaced Repetition software limits what "scheduling" algorithms a person can use.
-* Propriatary solutions have the same issues as the open source ones and are, well, propriatary. 
+* Proprietary solutions have the same issues as the open source ones and are, well, proprietary. 
 
 ## Definition of Terms
 
 * __Notecard__ - A *notecard* consists of a *subtitle* (plain text) and a *note* (to be determined markup language). It may also act as a container for other *notecards* (*sub-notecards*) or *flashcards*.
-* __Flashcard__ - A study *question* and *answer* associted with a *notecard* (to be determined markup language).
-* __Notebook__ - An organized collection of *notecards* and *flashcards* (Technically the root or top level *notecard*).
+* __Flashcard__ - A study *question* and *answer* associated with a *notecard* (to be determined markup language).
+* __Notebook__ - An organized collection of *notecards* and *flashcards* (technically the root or top level *notecard*).
 * __Library__ - A person or organization's collection of *notebooks*.
 
 ## Existing Specifications Used by This Standard
@@ -44,7 +44,7 @@ Notes and Flashcards have strengths and weaknesses. Fortunately each of their we
 A *notecard* consists of a *subtitle* (plain text) and a *note* (markup language). 
 It may also contain *flashcards* and even other *notecards* (*sub-notecards*). 
 
-*json*
+*JSON*
 ```json
 {
   "subtitle": "France",
@@ -54,7 +54,7 @@ It may also contain *flashcards* and even other *notecards* (*sub-notecards*).
 }
 ```
 
-*yaml*
+*YAML*
 ```yaml
 ---
 subtitle: France
@@ -68,7 +68,7 @@ flashcards:
 
 ### Branch Notecards
 
-* Contain an ordered list of other *sub-notecards* (You can think of them like a directory or folder for other *notecards* (*sub-notecards*), along with optionaly containing a *note* themselves).
+* Contain an ordered list of other *sub-notecards*. You can think of them like a directory or folder for other *notecards* (*sub-notecards*), but they can still have a *note*.
 * The *subtitle* value **cannot** be empty.
 * The *note* value **can** be empty.
 * Can contain zero or more *flashcards*.
@@ -89,12 +89,12 @@ A *notebook* contains *notecards* and *flashcards* that are normally related to 
 
 In this example, "Kenya" is the subtitle of the *branch notecard* and "Border Countries" is the *subtitle* of the *sub-leaf notecard*
 
-*json*
+*JSON*
 ```json
 {
   "subtitle": "Kenya",
   "note": "* Capital: Nairobi\n* Population: 48 million\n* Continent: Africa\n",
-  "subnotes": [
+  "sub-notecards": [
     {
       "subtitle": "Border Countries",
       "note": "* Tanzania\n* Uganda\n* South Sudan\n* Ethiopia\n* Somalia\n"
@@ -104,7 +104,7 @@ In this example, "Kenya" is the subtitle of the *branch notecard* and "Border Co
 }
 ```
 
-*yaml*
+*YAML*
 ```yaml
 ---
 subtitle: Kenya
@@ -112,7 +112,7 @@ note: |
   * Capital: Nairobi
   * Population: 48 million
   * Continent: Africa
-subnotes:
+sub-notecards:
 - subtitle: Border Countries
   note: |
     * Tanzania
@@ -127,7 +127,7 @@ flashcards:
 
 An example *notecard* that contains two *flashcards*
 
-*json*
+*JSON*
 ```json
 {
   "subtitle": "Argentina",
@@ -146,7 +146,7 @@ An example *notecard* that contains two *flashcards*
 }
 ```
 
-*yaml*
+*YAML*
 ```yaml
 ---
 subtitle: Argentina
@@ -183,6 +183,13 @@ Markup language is to be determined, but will probably be a subset of Markdown, 
 * Horizontal rules, there should be no need to seperate sections of a *note*, you would just create a new *notecard*.
 
 ## Spaced Repetition
+
+## To Be Determined
+
+* JSON or YAML or BOTH.
+* Markdown or HTML for markup language. 
+* Should there be a max depth of *sub-notecards* in a *notebook*. If trying to match HTML the deepest level should be 6, including the *notebook* (root level *notecard*). For example, int the following *notebook*'s path, the *notecard* "Langauges" would would at level 6.
+> "Geography" > "Continents" > "Asia" > "Countries" > "China" > "Languages"
 
 ## Posible Additional Features
 

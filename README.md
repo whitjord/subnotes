@@ -4,7 +4,9 @@
 
 ## Why Notes, Flashcards, and Spaced Repetition
 
-To keep what you learn. We can spend a lot of time and effort teaching and learning new information, but very little on retaining that information, which is too often forgoten or lost.
+To keep what you learn. 
+
+We can spend a lot of time and effort teaching and learning new information, but very little on retaining that information, which is too often forgoten or lost.
 
 Notes and Flashcards have strengths and weaknesses. Fortunately each of their weaknesses is overcome by the strength of the other.
 
@@ -57,9 +59,9 @@ It may also contain *flashcards* and even other *notecards* (*sub-notecards*).
 ---
 subtitle: France
 note: |
- * Capital: Paris
- * Population: 66 million
- * Continent: Europe
+  * Capital: Paris
+  * Population: 66 million
+  * Continent: Europe
 sub-notecards:
 flashcards:
 ```
@@ -149,9 +151,9 @@ An example *notecard* that contains two *flashcards*
 ---
 subtitle: Argentina
 note: |
- * Capital: Buenos Aires
- * Population: 43 million
- * Continent: South America
+  * Capital: Buenos Aires
+  * Population: 43 million
+  * Continent: South America
 sub-notecards:
 flashcards:
 - question: What is the capital of Argentina?

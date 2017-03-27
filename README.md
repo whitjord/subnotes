@@ -186,9 +186,9 @@ Markup language is to be determined, but will probably be a subset of Markdown, 
 
 ## To Be Determined
 
-* JSON or YAML or BOTH.
-* Markdown or HTML for markup language. 
-* Should there be a max depth of *sub-notecards* in a *notebook*. If trying to match HTML the deepest level should be 6, including the *notebook* (root level *notecard*). For example, int the following *notebook*'s path, the *notecard* "Langauges" would would at level 6.
+* JSON or YAML.
+* Markdown or HTML. 
+* Should there be a max depth of *sub-notecards* in a *notebook*. If trying to match HTML/Markdown header levels the deepest level should be 6, including the *notebook* (root level *notecard*). For example, in the following *notebook*'s path, the *notecard* "Langauges" would be at level 6.
 > "Geography" > "Continents" > "Asia" > "Countries" > "China" > "Languages"
 
 ## Posible Additional Features

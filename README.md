@@ -123,6 +123,43 @@ flashcards:
 
 ## Flashcards
 
+An example *notecard* that contains two *flashcards*
+
+*json*
+```json
+{
+  "subtitle": "Argentina",
+  "note": "* Capital: Buenos Aires\n* Population: 43 million\n* Continent: South America\n",
+  "sub-notecards": null,
+  "flashcards": [
+    {
+      "question": "What is the capital of Argentina?",
+      "answer": "Buenos Aires"
+    },
+    {
+      "question": "What is the population of Argentina?",
+      "answer": "43 Million"
+    }
+  ]
+}
+```
+
+*yaml*
+```yaml
+---
+subtitle: Argentina
+note: |
+ * Capital: Buenos Aires
+ * Population: 43 million
+ * Continent: South America
+sub-notecards:
+flashcards:
+- question: What is the capital of Argentina?
+  answer: Buenos Aires
+- question: What is the population of Argentina?
+  answer: 43 Million
+```
+
 ## Markup for Notes and Flashcards
 
 Markup language is to be determined, but will probably be a subset of Markdown, specifically [CommonMark](http://commonmark.org/), with some posible extensions for math and simple tables. Markdown has the advantage over HTML of being easily human readable and writeble. There are plenty of open source libraries for converting markdown to HTML and other document formats and even open source WYSIWYG editors.  
@@ -140,8 +177,8 @@ Markup language is to be determined, but will probably be a subset of Markdown, 
 
 **Not Included in Subset of Markdown (partial list)**
 
-* Headers, this is because the Notecard's subtitles should act as headers .
-* Horizontal rules, there should be no need to seperate sections of a note, you would just create a new note.
+* Headers, this is because the *notecard*'s subtitles should act as headers.
+* Horizontal rules, there should be no need to seperate sections of a *note*, you would just create a new *notecard*.
 
 ## Spaced Repetition
 
@@ -151,7 +188,7 @@ Markup language is to be determined, but will probably be a subset of Markdown, 
 * Special types of *notecards* that could facilite dynamic creations. For example, a "definition" *notecard* could facilitate creating two *flashcards* (A regular "What is <*subtitle*>?" question and a Jepordy style question, "What word does <*note*> describe?"). A "definition" *notecard* would also create the ability generate a glossary for a *notebook* dynamicaly. 
 * *Notebook* meta data (Author, date, version, refrences/citations, canonical/perma link, etc.).
 * *Notecard* meta data (reference/citation, type, etc).
-* Alternate versions for *flashcards* (Example: Q0: 3 + x = 9, Q1: 4 + y = 7, Q2: z + 2 + 5). Spaced Repition programs could randomly pick one. Note: This is not the same as having multiple *flashcards* for a single *notecard*.
+* Alternate versions for *flashcards* (Example: Q0: 3 + x = 9, Q1: 4 + y = 7, Q2: z + 2 + 5). Spaced Repetition programs could randomly pick one. Note: This is not the same as having multiple *flashcards* for a single *notecard*.
 * Regular Expression answers in *flashcards* for automated testing (and posibly other pattern matching or parsing methods). 
 * *Notecard* links (like symbolic links in Unix or shortcuts in Windows) as long as they don't create a recursive/infinite loop. Would probably use [JSON Pointers](https://tools.ietf.org/html/rfc6901) to implement.
 * Markdown to *notebook*. A standard for converting a Markdown document into a *notebook*/*notecards*. It would probably not support flashcards. This could be used by someone taking notes in a text file using markdown and an editor of their choice. Headers would be used for *subtitles*, the header level to determine if it is a *sub-notecard*, and blank lines used to seperate *notecards* 

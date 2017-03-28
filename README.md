@@ -225,7 +225,7 @@ Notes, questions, and answers are written in a subset of [CommonMark](http://com
 * TeX/LaTex (for displaying math).
 * Simple tables (Github Flavored Markdown style).
 
-**Not included in subset of Markdown (or at least discouraged, partial list)**
+**Not included in supported subset of Markdown (or at least discouraged, partial list)**
 
 * Headers, this is because the *subtopics'* topic should act as headers.
 * Horizontal rules, there should be no need to separate sections of a *note*, you would just create a new *notecard*.
@@ -244,16 +244,16 @@ Notes, questions, and answers are written in a subset of [CommonMark](http://com
 * Markdown or HTML. Leaning towards Markdown.
 * Should there be a max depth of *subtopics* in a *notebook*. If trying to match HTML/Markdown header levels the deepest level should be 6, including the *notebook* (root level *subtopic*). 
 
-## Possible Additional Features
+## Possible/Probable Additional Features
 
 * Image support in *notecards* and *flashcards*. Might require using some kind of archival file format, like zip, to bundle images and JSON.
 * Special types of *notecards* that could facilitate dynamic creations. For example, a "definition" *notecard* could facilitate creating two *flashcards* (A regular "Define <*notecard:title*>" question and a Jeopardy style question, "What word does <*notecard:note*> describe?"). A "definition" *notecard* would also create the ability generate a glossary for a *notebook* dynamically. 
 * *Notebook* meta data (Author, date, version, references/citations, canonical/perma link, etc.).
-* *Notecard* meta data (reference/citation, type, etc).
-* Alternate versions for *flashcards* (Example: question: 3 + x = 9, question-alt1: 4 + y = 7, question-alt2: z + 2 = 5). Spaced Repetition programs could randomly pick one. Note: This is not the same as having multiple *flashcards* for a single *notecard*.
-* Regular Expression answers in *flashcards* for automated testing (and possibly other pattern matching or parsing methods too). 
+* *Notecard* meta data (reference/citation, type, etc.).
+* Alternate versions for *flashcards* (Example: [question: 3 + x = 9], [question-alt1: 4 + y = 7], [question-alt2: z + 2 = 5]). Spaced Repetition programs could randomly pick one. Note: This is not the same as having multiple *flashcards* in a single *notecard* or *subtopic*.
+* Option for Regular Expression answers in *flashcards* to support automated testing (and possibly other pattern matching or parsing methods too). 
 * *Notecard* and *subtopic* links (like symbolic links in Unix or shortcuts in Windows) as long as they don't create a recursive/infinite loop. Would probably use [JSON Pointers](https://tools.ietf.org/html/rfc6901) to implement.
-* Markdown to *notebook*. A standard for converting a Markdown document into a *notebook*/*notecards*. It would probably not support flashcards. This could be used by someone taking notes in a text file using markdown and an editor of their choice. Headers would be used for *subtitles*, the header level to determine if it is a *sub-notecard*, and blank lines used to separate *notecards*. (this maybe shouldn't be in the standard, but could be an interesting side project)
+* Markdown to *notebook*. A standard for converting a Markdown document into a *notebook*/*notecards*. It would probably not support flashcards. This could be used by someone taking notes in a text file using markdown and an editor of their choice. Headers would be used for *subtopics* and blank lines used to separate *notecards*. (this maybe shouldn't be in the standard, but could be an interesting side project)
 
 ## Features Intentionally Not Included
 

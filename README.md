@@ -11,7 +11,7 @@ An Open Standard for Notes, Flashcards, and Spaced Repetition
 
 To keep what you learn. 
 
-We spend a lot of time and effort teaching and learning new information, but very little effort on retaining that information, which is too often forgotten or lost.
+We spend a lot of time and effort teaching and learning new information, but very little effort on retaining that information, which is often forgotten or lost.
 
 Notes and Flashcards each have strengths that complement each other. 
 

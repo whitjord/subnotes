@@ -83,7 +83,7 @@ answer: Buenos Aires
 
 #### *notecard*
 
-A note, which may include a topic (subtitle), and may contain one or more flashcards.
+A note, which may include a topic (subtopic/subtitle), and may contain a list of one or more flashcards.
 
 *name / value pairs*
 ```yaml
@@ -117,7 +117,7 @@ note: |
 
 #### *subtopic*
 
-A topic (title/subtitle), which may include a note, and may contain one or more flashcards, notecards, or even other subtopics. You can think of it like a folder, directory, or section header in an outline. 
+A topic (subtopic/title/subtitle), which may include a note, and may contain a list of one or more flashcards, notecards, or even other subtopics. You can think of it like a folder, directory, or section header in an outline. 
 
 *name / value pairs*
 ```yaml
@@ -200,7 +200,7 @@ subtopics:
 
 #### *notebook*
 
-A *notebook* is just a root level *subtopic*. It typically contains notes, flashcards, and other subtopics that share a common Theme.
+A *notebook* is just a root level *subtopic*. It typically contains notecards, flashcards, and other subtopics that share a common Theme.
 
 #### *library*
 

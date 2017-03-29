@@ -56,7 +56,7 @@ A *flashcard* node must contain a **question** and an **answer**. It is a leaf n
 
 You can think of it like a notecard with a question on one side and an answer on the other.
 
-*flashcard schema*
+*flashcard JSON Schema*
 
 ```json
 {
@@ -97,7 +97,7 @@ A *note* node must contain a **note**. It may include a **topic**. It may contai
 
 You can think of it like an notecard containing a concise piece of information about a topic, but also a folder that can contain flashcards.
 
-*note schema*
+*note JSON Schema*
 
 ```json
 {
@@ -143,7 +143,7 @@ A *topic* node must contain a **topic**. It may include a **note**. It may conta
 
 You can think of it like a folder that can contain flashcards, notecards, and other folders. 
 
-*topic schema* 
+*topic JSON Schema* 
 
 ```json
 {

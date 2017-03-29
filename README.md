@@ -11,7 +11,7 @@ An Open Standard for Notes, Flashcards, and Spaced Repetition
 
 To keep what you learn. 
 
-We spend a lot of time and effort teaching and learning new information, but very little effort on retaining that information, which is often forgotten or lost.
+We spend a lot of time and effort teaching and learning new information, but very little effort on retaining that information, which is too often forgotten or lost.
 
 Notes and Flashcards each have strengths that complement each other. 
 
@@ -23,57 +23,65 @@ Notes and Flashcards each have strengths that complement each other.
     * [Forgetting Curve](https://en.wikipedia.org/wiki/Forgetting_curve)
     * [Testing Effect](https://en.wikipedia.org/wiki/Testing_effect) 
     * [Spacing Effect](https://en.wikipedia.org/wiki/Spacing_effect)
+    * [Active Recall](https://en.wikipedia.org/wiki/Active_recall)
     
 ## Why an Open Standard for Notes, Flashcards, and Spaced Repetition
 
 * Existing open source projects focus on either *notes* or *flashcards*, but not both.
 * Existing open source projects focus mainly on a single end user application, but not a standard that could be integrated into multiple applications and libraries.
 * Existing open source Spaced Repetition software limit what "scheduling" algorithms a person can use.
-* Proprietary solutions have the same issues as the open source ones and are, well, proprietary. 
+* Existing proprietary solutions have the same issues as the open source ones and are, well, proprietary. 
 
-## Two Specifications
-
-* **subnotes** - A specification for notes and flashcards organized by subtopics.
-* **reps** - A specification for implementing spaced repetition using subnotes flashcards.  
 
 ### Specifications Used by **subnotes**
 
-* [JSON](http://www.json.org/) (or maybe [YAML](http://yaml.org/))
-* [CommonMark](http://spec.commonmark.org/) (or maybe [HTML](https://www.w3.org/TR/html/))
-* (Maybe [JSON Pointers](https://tools.ietf.org/html/rfc6901))
-* (Maybe [JSON Schema](http://json-schema.org/))
+* [JSON](http://www.json.org/) 
+* [JSON Schema](http://json-schema.org/)
+* [JSON Pointers](https://tools.ietf.org/html/rfc6901)
+* [CommonMark](http://spec.commonmark.org/)
 
 ---
 
-## **subnotes** Specification
+## Core Specification
 
-### Subtopics, Notecards, and Flashcards
+### Topics, Notes, and Flashcards
 
-Subnotes use a tree structure to organize notes and flashcard by subtopics. There are three types of nodes, *subtopics*, *notecards*, and *flashcards*. The root node is always a *subtopic*. It is the only required node and is also called a *notebook*.
-
-*NOTE: I'm considering using [JSON Schema](http://json-schema.org/) to define the data structure(s)*
+Subnotes use a tree structure to organize notes and flashcards by topic. There are three types of nodes: *topic*, *note*, and *flashcard*. The root node is always a *topic* node. It is the only required node and is also called a *notebook*.
 
 #### *flashcard*
 
-A question and answer pair.
+> A card with a question on one side and its answer on the other; used as an aid for memorization.
 
-*name / value pairs*
-```yaml
-- name: question
-  value: string (Markdown)
-  required: yes
-- name: answer
-  value: string (Markdown)
-  required: yes
+A *flashcard* node must contain a **question** and an **answer**. It is a leaf node, meaning it contains no other nodes. A *flashcard*'s parent node can be a *note* or a *topic* node.
+
+You can think of it like a notecard with a question on one side and an answer on the other.
+
+*flashcard schema*
+
+```json
+{
+  "flashcard": {
+    "type": "object",
+    "properties": {
+      "question": {
+        "description": "A question. To be parsed as Markdown",
+        "type": "string"
+      },
+      "answer": {
+        "description": "An answer. To be parsed as Markdown",
+        "type": "string"
+      }
+    },
+    "required": [
+      "question",
+      "answer"
+    ]
+  }
+}
 ```
 
-*Example flashcard (YAML)*
-```yaml
-question: What is the capital of Argentina?
-answer: Buenos Aires 
-```
+*Example flashcard (simplest form)*
 
-*Example flashcard (JSON)*
 ```json
 {
   "question": "What is the capital of Argentina?",
@@ -81,118 +89,105 @@ answer: Buenos Aires
 }
 ```
 
-#### *notecard*
+#### *note*
 
-A note, which may include a topic (subtopic/subtitle), and may contain a list of one or more *flashcards*.
+> A brief record of something written down for future reference.
 
-*name / value pairs*
-```yaml
-- name: note
-  value: string (Markdown)
-  required: yes
-- name: topic
-  value: string (plain text)
-  required: no
-- name: flashcards
-  value: array (of flashcards)
-  required: no
-```
+A *note* node must contain a **note**. It may include a **topic**. It may contain **flashcards**, a list of zero or more *flashcard* nodes. A *note*'s parent node is always a *topic* node.
 
-*Example notecard (YAML)*
-```yaml
-topic: Kenya
-note: |
-  * Capital: Nairobi
-  * Population: 48 million
-  * Continent: Africa
-```
+You can think of it like an notecard containing a concise piece of information about a topic, but also a folder that can contain flashcards.
 
-*Example notecard (JSON)*
+*note schema*
+
 ```json
 {
-  "topic": "Kenya",
+  "note": {
+    "type": "object",
+    "properties": {
+      "note": {
+        "description": "A note. To be parsed as Markdown",
+        "type": "string"
+      },
+      "topic": {
+        "description": "The topic of the note. To be parsed as plain text",
+        "type": "string"
+      },
+      "flashcards" : {
+        "description": "A list of zero or more flashcards",
+        "type": "array",
+        "items": {
+          "$ref": "#/flashcard"
+        }
+      }
+    },
+    "required": [
+      "note"
+    ]
+  }
+}
+```
+
+*Example note (simplest form)*
+
+```json
+{
   "note": "* Capital: Nairobi\n* Population: 48 million\n* Continent: Africa\n"
 }
 ```
 
-#### *subtopic*
+#### *topic*
 
-A topic/subtopic (title/subtitle), which may include a note, and may contain a list of one or more *flashcards*, *notecards*, or even other *subtopics*. You can think of it like a folder, directory, or section header in an outline. 
+> The subject or theme of a text.
 
-*name / value pairs*
-```yaml
-- name: topic
-  value: string (plain text)
-  required: yes
-- name: note
-  value: string (Markdown)
-  required: no
-- name: flashcards
-  value: array (of flashcards)
-  required: no
-- name: notecards
-  value: array (of notecards)
-  required: no
-- name: subtopics
-  value: array (of subtopics)
-  required: no
-```
+A *topic* node must contain a **topic**. It may include a **note**. It may contain **flashcards**, a list of zero or more *flashcard* nodes. It may contain **subnotes**, a list of zero or more *note* nodes. It may contain **subtopics**, and a list of zero or more *topic* nodes. A *topic*'s parent node, if it has one, is always another *topic* node.
 
-*Example subtopic/notebook that contains a notecard, flashcard, and several subtopics (YAML)*
-```yaml
-topic: Geography
-note: This is my notebook for storing info on Geography.
-subtopics:
-  - topic: Countries
-    subtopics:
-      - topic: France
-        note: A country in Europe
-        notecards:
-          - topic: basic facts
-            note: |
-              * Capital: Paris
-              * Population: 66 million
-              * Continent: Europe
-            flashcards:
-              - question: What is the capital of France?
-                answer: Paris
-      - topic: Vietnam
-      - topic: New Zealand
-```
-*Example subtopic/notebook that contains a notecard, flashcard, and several subtopics (JSON)*
+You can think of it like a folder that can contain flashcards, notecards, and other folders. 
+
+*topic schema* 
+
 ```json
 {
-  "topic": "Geography",
-  "note": "This is my notebook for storing info on Geography.",
-  "subtopics": [
-    {
-      "topic": "Countries",
-      "subtopics": [
-        {
-          "topic": "France",
-          "note": "A country in Europe",
-          "notecards": [
-            {
-              "topic": "basic facts",
-              "note": "* Capital: Paris\n* Population: 66 million\n* Continent: Europe\n",
-              "flashcards": [
-                {
-                  "question": "What is the capital of France?",
-                  "answer": "Paris"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "topic": "Vietnam"
-        },
-        {
-          "topic": "New Zealand"
+  "topic": {
+    "type": "object",
+    "properties": {
+      "topic": {
+        "description": "A note related to the topic. To be parsed as Markdown",
+        "type": "string"
+      },
+      "flashcards": {
+        "description": "A list of zero or more flashcards",
+        "type": "array",
+        "items": {
+          "$ref": "#/flashcard"
         }
-      ]
-    }
-  ]
+      },
+      "subnotes": {
+        "description": "A list of zero or more notes",
+        "type": "array",
+        "items": {
+          "$ref": "#/note"
+        }
+      },
+      "subtopics": {
+        "description": "A list of zero or more topics",
+        "type": "array",
+        "items": {
+          "$ref": "#/topic"
+        }
+      }
+    },
+    "required": [
+      "topic"
+    ]
+  }
+}
+```
+
+*Example topic (simplest form)*
+
+```json
+{
+  "topic": "Europe"
 }
 ```
 
@@ -200,65 +195,60 @@ subtopics:
 
 #### *notebook*
 
-A *notebook* is just a root level *subtopic*. It typically contains *notecards*, *flashcards*, and other *subtopics* that share a common Theme.
+A *notebook* is just a root level *topic* node. It typically contains related, **flashcards**, **subnotes**, and **subtopics**.
 
 #### *library*
 
-A *library* is just a collection (array) of *notebooks*
+A *library* is just a collection (list) of *notebooks*
 
 ### Markdown
 
-Notes, questions, and answers are written in a subset of [CommonMark](http://commonmark.org/), with a few widely adopted extensions. Markdown has the advantage over HTML of being easily human readable and writeable. There are plenty of open source libraries for converting markdown to HTML and other document formats and even open source WYSIWYG editors.  
+Notes, questions, and answers are written in Markdown as defined in the [CommonMark Specification](http://spec.commonmark.org/). Markdown has the advantage over HTML of being easily human readable and writeable. Plenty of open source libraries are available for converting markdown to HTML and other document formats. There are also open source WYSIWYG Markdown editors that can be used so end users don't even have to use Markdown directly.  
 
-**Included in supported subset of Markdown (partial list)**
+The use of some Markdown elements in subnotes are discouraged, but not prohibited. The follow is a partial list of such elements and the reasons they should be avoided. *(Still not sure if they should be prohibited, not required to be supported, or just discouraged, TBD)*
 
-* Lists
-  1. Unordered
-  2. Ordered
-  3. Sublist
-  4. Mixed
-* `Code, inline and block.`
-* Strong (**bold**), emphasis (*italic*), and combination of the two (***both***).
+* Headers: This is because the *topics* should act as headers.
+* Horizontal rules: There should be no need to separate sections of a note, one should usually just create a new note or topic.
+* Raw HTML: Could create unexpected results when used by different software and create and inconsistent results
 
-**Included Markdown extensions**
+### Spaced Repetition
 
-* TeX/LaTex (for displaying math).
-* Simple tables (Github Flavored Markdown style).
+JSON that stores history of flashcard reviews, next review date of flashcard, a means to determine priority if overdue for review, and name of algorithm used to determine next review date. More coming soon...
 
-**Not included in supported subset of Markdown (or at least discouraged, partial list)**
+### Todo
 
-* Headers, this is because the *subtopics'* topic should act as headers.
-* Horizontal rules, there should be no need to separate sections of a *note*, you would just create a new *notecard*.
-
----
-
-## **reps** Specification
-
-*Coming soon...*
+* Spaced Repetition section: schema, examples
+* Add section for conventions used in this doc
+* Add more examples for flashcards, notes, and topics
+* Add possible HTML outputs for example flashcards, notes, topics, notebook
+* Allow pointers (symbolic links) for *note* nodes inside **subnotes** (and maybe the same *topic* nodes and **subtopics** too). Use JSON pointers.
+* Create a complete JSON Schema (Still not sure if JSON Schema will do everything I need it to)
+* If notes and flashcards allow pictures, how should they be "embedded"? Archive file that contains JSON and images? 
+* Alternate versions for flashcards. This is different than a list of flashcards. Spaced Repetition software would randomly pick a version when displaying a flashcard.
 
 --- 
 
-## To Be Determined
+## Extensions
 
-* JSON or YAML. YAML is easier to read, but if we use it we might want to make sure we don't use any features that would prevent converting it to JSON (YAML is a superset of JSON). We could just go with JSON and someone could always output it as YAML if they really wanted to.
-* Markdown or HTML. Leaning towards Markdown.
-* Should there be a max depth of *subtopics* in a *notebook*. If trying to match HTML/Markdown header levels the deepest level should be 6, including the *notebook* (root level *subtopic*). 
+Subnotes core spec should stay simple and comply with the other specs it is based on, but it should also be extensible. Extensions will probably come in three types, listed below with examples.
+ 
+1. Extensions for Nodes and Libraries  
+   (Additional metadata, name/value pairs, maybe use JSON Schema, but not sure yet how that would integrate with core spec JSON schema. Some of these could make their way into core spec.)
+   * Reference/citations for notebooks and notes
+   * regular expression answers for flashcards to facilitate automated testing
+   * Different "types" for *note* nodes. A "definition" *note* could facilitate dynamic generation of *flashcards* and glossaries using the *note*'s **topic** and **note** fields  
+2. Extensions for Markdown  
+   (Should be existing markdown extensions that are commonly used and well supported by markdown libraries.)
+   * LaTex/Tex for displaying math
+   * Tables
+3. Extensions for Spaced Repetition  
+   (Most likely just different types of scheduling algorithms.)
+   * SM-2 (SuperMemo 2)
+ 
+### Todo
+* Expand, refine
+* Define process for standardizing extensions (what form should they be in, where are they stored, how are they submitted, accepted, etc.)
 
-## Possible/Probable Additional Features
+---
 
-* Image support in *notecards* and *flashcards*. Might require using some kind of archival file format, like zip, to bundle images and JSON.
-* Special types of *notecards* that could facilitate dynamic creations. For example, a "definition" *notecard* could facilitate creating two *flashcards* (A regular "Define <*notecard:title*>" question and a Jeopardy style question, "What word does <*notecard:note*> describe?"). A "definition" *notecard* would also create the ability generate a glossary for a *notebook* dynamically. 
-* *Notebook* meta data (Author, date, version, references/citations, canonical/perma link, etc.).
-* *Notecard* meta data (reference/citation, type, etc.).
-* Alternate versions for *flashcards* (Example: [question: 3 + x = 9], [question-alt1: 4 + y = 7], [question-alt2: z + 2 = 5]). Spaced Repetition programs could randomly pick one. Note: This is not the same as having multiple *flashcards* in a single *notecard* or *subtopic*.
-* Option for Regular Expression answers in *flashcards* to support automated testing (and possibly other pattern matching or parsing methods too). 
-* *Notecard* and *subtopic* links (like symbolic links in Unix or shortcuts in Windows) as long as they don't create a recursive/infinite loop. Would probably use [JSON Pointers](https://tools.ietf.org/html/rfc6901) to implement.
-* Markdown to *notebook*. A standard for converting a Markdown document into a *notebook*/*notecards*. It would probably not support flashcards. This could be used by someone taking notes in a text file using markdown and an editor of their choice. Headers would be used for *subtopics* and blank lines used to separate *notecards*. (this maybe shouldn't be in the standard, but could be an interesting side project)
-
-## Features Intentionally Not Included
-
-* Direct support for multiple choice questions & answers. Spaced Repetition is more effective if you retrieve the answer from your mind, not a provided list.  
-
-## Author
-
-Jordan White
+Author: Jordan White

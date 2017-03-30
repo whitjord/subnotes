@@ -42,9 +42,9 @@ Notes and Flashcards each have strengths that complement each other.
 
 ### Conventions Used in This Specification
 
-JSON Objects are often referred to as "nodes" and are displayed like this: *nodename* 
+JSON Objects are referred to as "nodes" and are displayed like this: *nodename* 
 
-JSON field names (keys) are often display like this: **name**
+JSON field names (keys) are displayed like this: **name**
 
 *NOTE: JSON Schemas are a work in progress and haven't been tested yet*
 
@@ -276,7 +276,17 @@ A *notebook* is just a root level *topic* node. It typically contains related, *
 A *library* is just a collection (list) of *notebooks*
 
 ```json
-
+[
+  {
+    "topic": "Notebook1"
+  },
+  {
+    "topic": "Notebook2"
+  },
+  {
+    "topic": "Notebook3"
+  }
+]
 ```
 
 ### Markdown

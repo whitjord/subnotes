@@ -197,7 +197,7 @@ You can think of it like an notecard containing a concise piece of information a
 
 > The subject or theme of a text.
 
-A *topic* node must contain a **topic**. It may include a **note**. It may contain **flashcards**, a list of zero or more *flashcard* nodes. It may contain **subnotes**, a list of zero or more *note* nodes. It may contain **subtopics**, and a list of zero or more *topic* nodes. A *topic*'s parent node, if it has one, is always another *topic* node.
+A *topic* node must contain a **topic**. It may include a **note**. It may contain **flashcards**, a list of zero or more *flashcard* nodes. It may contain **subnotes**, a list of zero or more *note* nodes or JSON pointers to *note* nodes ("notepointers"). It may contain **subtopics**, and a list of zero or more *topic* nodes. A *topic*'s parent node, if it has one, is always another *topic* node.
 
 You can think of it like a folder that can contain flashcards, notecards, and other folders. 
 

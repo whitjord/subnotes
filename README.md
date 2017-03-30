@@ -40,36 +40,49 @@ Notes and Flashcards each have strengths that complement each other.
 * [JSON Pointers](https://tools.ietf.org/html/rfc6901)
 * [CommonMark](http://spec.commonmark.org/)
 
+### Conventions Used in This Specification
+
+JSON Objects are often referred to as "nodes" and are displayed like this: *nodename* 
+
+JSON field names (keys) are often display like this: **name**
+
+*NOTE: JSON Schemas are a work in progress and haven't been tested yet*
+
 ---
 
 ## Core Specification
 
-### Topics, Notes, and Flashcards
+### Topics, Notes, Flashcards, and Questions
 
-Subnotes use a tree structure to organize notes and flashcards by topic. There are three types of nodes: *topic*, *note*, and *flashcard*. The root node is always a *topic* node. It is the only required node and is also called a *notebook*.
+Subnotes use a tree structure to organize notes and flashcards by topic. There are four types of nodes: *topic*, *note*, *flashcard*, and *question*. The root node is always a *topic* node. It is the only required node and is also called a *notebook*.
 
-#### *flashcard*
+#### *question*
 
-> A card with a question on one side and its answer on the other; used as an aid for memorization.
+> A sentence worded or expressed so as to elicit information.
 
-A *flashcard* node must contain a **question** and an **answer**. It is a leaf node, meaning it contains no other nodes. A *flashcard*'s parent node can be a *note* or a *topic* node.
+A *question* node must contain a **question** and an **answer**. It is a leaf node, meaning it contains no other nodes. A *question*'s parent node is always a *flashcard* node.
 
-You can think of it like a notecard with a question on one side and an answer on the other.
-
-*flashcard JSON Schema*
+*question JSON Schema*
 
 ```json
 {
-  "flashcard": {
+  "question": {
     "type": "object",
     "properties": {
       "question": {
         "description": "A question. To be parsed as Markdown",
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "answer": {
         "description": "An answer. To be parsed as Markdown",
-        "type": "string"
+        "type": "string",
+        "minLength": 1
+      },
+      "regex": {
+        "description": "An escaped regular expression matching the answer. Used for automated testing",
+        "type": "string",
+        "minLength": 1
       }
     },
     "required": [
@@ -80,12 +93,56 @@ You can think of it like a notecard with a question on one side and an answer on
 }
 ```
 
-*Example flashcard (simplest form)*
-
+*Example question (simplest form)*
 ```json
 {
   "question": "What is the capital of Argentina?",
   "answer": "Buenos Aires"
+}
+```
+#### *flashcard*
+
+> A card with a question on one side and its answer on the other; used as an aid for memorization.
+
+***TODO: Add support for Spaced Repetition***
+
+A *flashcard* node must include a list of one or more *question* node.  A *flashcard*'s parent node can be a *note* or a *topic* node. 
+
+You can think of it like a notecard with a question on one side and an answer on the other, but it can contain alternate versions of the question. This is important when you want to make sure you are testing for a concept and not just the answer to one example question. If the question was, "What is the subject in the following sentence? Spot caught the ball.", you wouldn't want to just remember "Spot." You would want to have alternate questions so you would be testing the concept of a sentence subject, not what the subject is of one particular sentence.
+
+*flashcard JSON Schema*
+
+```json
+{
+  "flashcard": {
+    "type": "object",
+    "properties": {
+      "questions": {
+        "description": "A list of one or more questions",
+        "type": "array",
+        "items": {
+          "$ref": "#/question"
+        },
+        "minItems": 1
+      }
+    },
+    "required": [
+      "questions"
+    ]
+  }
+}
+```
+
+*Example flashcard (simplest form)*  
+
+```json
+{
+  "questions": [
+    {
+      "question": "What is the capital of Vietnam?",
+      "answer": "Hanoi"
+    }
+  ]
 }
 ```
 
@@ -106,7 +163,8 @@ You can think of it like an notecard containing a concise piece of information a
     "properties": {
       "note": {
         "description": "A note. To be parsed as Markdown",
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "topic": {
         "description": "The topic of the note. To be parsed as plain text",
@@ -143,6 +201,17 @@ A *topic* node must contain a **topic**. It may include a **note**. It may conta
 
 You can think of it like a folder that can contain flashcards, notecards, and other folders. 
 
+*notepointer JSON Schema*
+
+```json
+{
+  "notepointer":{
+    "type": "string",
+    "pattern": "#/(subtopics/[0-9]{1,}/)?([0-9]{1,}/subnotes/[0-9]{1,}){1,}"
+  }
+}
+```  
+
 *topic JSON Schema* 
 
 ```json
@@ -152,6 +221,11 @@ You can think of it like a folder that can contain flashcards, notecards, and ot
     "properties": {
       "topic": {
         "description": "A note related to the topic. To be parsed as Markdown",
+        "type": "string",
+        "minLength": 1
+      },
+      "note": {
+        "description": "A note. To be parsed as Markdown",
         "type": "string"
       },
       "flashcards": {
@@ -162,7 +236,7 @@ You can think of it like a folder that can contain flashcards, notecards, and ot
         }
       },
       "subnotes": {
-        "description": "A list of zero or more notes",
+        "description": "A list of zero or more notes or notepointers",
         "type": "array",
         "items": {
           "$ref": "#/note"
@@ -187,7 +261,7 @@ You can think of it like a folder that can contain flashcards, notecards, and ot
 
 ```json
 {
-  "topic": "Europe"
+  "topic": "France"
 }
 ```
 
@@ -201,6 +275,10 @@ A *notebook* is just a root level *topic* node. It typically contains related, *
 
 A *library* is just a collection (list) of *notebooks*
 
+```json
+
+```
+
 ### Markdown
 
 Notes, questions, and answers are written in Markdown as defined in the [CommonMark Specification](http://spec.commonmark.org/). Markdown has the advantage over HTML of being easily human readable and writeable. Plenty of open source libraries are available for converting markdown to HTML and other document formats. There are also open source WYSIWYG Markdown editors that can be used so end users don't even have to use Markdown directly.  
@@ -211,20 +289,15 @@ The use of some Markdown elements in subnotes are discouraged, but not prohibite
 * Horizontal rules: There should be no need to separate sections of a note, one should usually just create a new note or topic.
 * Raw HTML: Could create unexpected results when used by different software and create and inconsistent results
 
-### Spaced Repetition
-
-JSON that stores history of flashcard reviews, next review date of flashcard, a means to determine priority if overdue for review, and name of algorithm used to determine next review date. More coming soon...
-
 ### Todo
 
-* Spaced Repetition section: schema, examples
-* Add section for conventions used in this doc
+* Check notepointer pattern
+* Add spaced repetition support to flashcards
+* Use more conventional conventions, checkout RFC 2119 
 * Add more examples for flashcards, notes, and topics
-* Add possible HTML outputs for example flashcards, notes, topics, notebook
-* Allow pointers (symbolic links) for *note* nodes inside **subnotes** (and maybe the same *topic* nodes and **subtopics** too). Use JSON pointers.
-* Create a complete JSON Schema (Still not sure if JSON Schema will do everything I need it to)
-* If notes and flashcards allow pictures, how should they be "embedded"? Archive file that contains JSON and images? 
-* Alternate versions for flashcards. This is different than a list of flashcards. Spaced Repetition software would randomly pick a version when displaying a flashcard.
+* Add possible HTML outputs for example questions/flashcards, notes, and topics
+* Create a complete JSON Schema
+* How are images going to be handled?
 
 --- 
 
@@ -247,6 +320,7 @@ Subnotes core spec should stay simple and comply with the other specs it is base
  
 ### Todo
 * Expand, refine
+* Decide how to handle node/library, and spaced repetition extensions in existing JSON Schema
 * Define process for standardizing extensions (what form should they be in, where are they stored, how are they submitted, accepted, etc.)
 
 ---

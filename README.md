@@ -104,8 +104,6 @@ A *question* node must contain a **question** and an **answer**. It is a leaf no
 
 > A card with a question on one side and its answer on the other; used as an aid for memorization.
 
-***TODO: Add support for Spaced Repetition***
-
 A *flashcard* node must include a list of one or more *question* node.  A *flashcard*'s parent node can be a *note* or a *topic* node. 
 
 You can think of it like a notecard with a question on one side and an answer on the other, but it can contain alternate versions of the question. This is important when you want to make sure you are testing for a concept and not just the answer to one example question. If the question was, "What is the subject in the following sentence? Spot caught the ball.", you wouldn't want to just remember "Spot." You would want to have alternate questions so you would be testing the concept of a sentence subject, not what the subject is of one particular sentence.
@@ -301,8 +299,8 @@ The use of some Markdown elements in subnotes are discouraged, but not prohibite
 
 ### Todo
 
+* Add spaced repetition support (need to figure out if data should go in flashcards or be in one space under the notebook) 
 * Check notepointer pattern
-* Add spaced repetition support to flashcards
 * Use more conventional conventions, checkout RFC 2119 
 * Add more examples for flashcards, notes, and topics
 * Add possible HTML outputs for example questions/flashcards, notes, and topics

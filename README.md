@@ -28,7 +28,7 @@ Notes and Flashcards each have strengths that complement each other.
 ## Why an Open Standard for Notes, Flashcards, and Spaced Repetition
 
 * Existing open source projects focus on either *notes* or *flashcards*, but not both.
-* Existing open source projects focus mainly on a single end user application, but not a standard that could be integrated into multiple applications and libraries.
+* Existing open source projects focus mainly on a single end user application, not a standard that could be used by multiple applications.
 * Existing open source Spaced Repetition software limit what "scheduling" algorithms a person can use.
 * Existing proprietary solutions have the same issues as the open source ones and are, well, proprietary. 
 

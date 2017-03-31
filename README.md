@@ -1,7 +1,6 @@
-
 # **subnotes** (working draft)
 
-An Open Standard for Notes, Flashcards, and Spaced Repetition  
+An Open Standard for Notes, Flashcards, and Spaced Repetition
 
 [![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-sa/4.0/)
 
@@ -9,40 +8,39 @@ An Open Standard for Notes, Flashcards, and Spaced Repetition
 
 ## Why Notes, Flashcards, and Spaced Repetition
 
-To keep what you learn. 
+To keep what you learn.
 
 We spend a lot of time and effort teaching and learning new information, but very little effort on retaining that information, which is often forgotten or lost.
 
-Notes and Flashcards each have strengths that complement each other. 
+Notes and Flashcards each have strengths that complement each other.
 
 * **Notes** are good for capturing and organizing important pieces of information.
 * **Flashcards**, when used with **Spaced Repetition**, are great for getting those important pieces of information into long term memory.  
-  (If you would like to learn more about this you may want to look at the following topics on Wikipedia.) 
+  (If you would like to learn more about this you may want to look at the following topics on Wikipedia.)
     * [Spaced Repetition](https://en.wikipedia.org/wiki/Spaced_repetition)
     * [Flashcard](https://en.wikipedia.org/wiki/Flashcard)
     * [Forgetting Curve](https://en.wikipedia.org/wiki/Forgetting_curve)
-    * [Testing Effect](https://en.wikipedia.org/wiki/Testing_effect) 
+    * [Testing Effect](https://en.wikipedia.org/wiki/Testing_effect)
     * [Spacing Effect](https://en.wikipedia.org/wiki/Spacing_effect)
     * [Active Recall](https://en.wikipedia.org/wiki/Active_recall)
-    
+
 ## Why an Open Standard for Notes, Flashcards, and Spaced Repetition
 
 * Existing open source projects focus on either *notes* or *flashcards*, but not both.
 * Existing open source projects focus mainly on a single end user application, not a standard that could be used by multiple applications.
 * Existing open source Spaced Repetition software limit what "scheduling" algorithms a person can use.
-* Existing proprietary solutions have the same issues as the open source ones and are, well, proprietary. 
-
+* Existing proprietary solutions have the same issues as the open source ones and are, well, proprietary.
 
 ### Specifications Used by **subnotes**
 
-* [JSON](http://www.json.org/) 
+* [JSON](http://www.json.org/)
 * [JSON Schema](http://json-schema.org/)
 * [JSON Pointers](https://tools.ietf.org/html/rfc6901)
 * [CommonMark](http://spec.commonmark.org/)
 
 ### Conventions Used in This Specification
 
-JSON Objects are referred to as "nodes" and are displayed like this: *nodename* 
+JSON Objects are referred to as "nodes" and are displayed like this: *nodename*
 
 JSON field names (keys) are displayed like this: **name**
 
@@ -94,6 +92,7 @@ A *question* node must contain a **question** and an **answer**. It is a leaf no
 ```
 
 *Example question (simplest form)*
+
 ```json
 {
   "question": "What is the capital of Argentina?",
@@ -131,7 +130,7 @@ You can think of it like a notecard with a question on one side and an answer on
 }
 ```
 
-*Example flashcard (simplest form)*  
+*Example flashcard (simplest form)*
 
 ```json
 {
@@ -197,20 +196,9 @@ You can think of it like an notecard containing a concise piece of information a
 
 A *topic* node must contain a **topic**. It may include a **note**. It may contain **flashcards**, a list of zero or more *flashcard* nodes. It may contain **subnotes**, a list of zero or more *note* nodes or JSON pointers to *note* nodes ("notepointers"). It may contain **subtopics**, and a list of zero or more *topic* nodes. A *topic*'s parent node, if it has one, is always another *topic* node.
 
-You can think of it like a folder that can contain flashcards, notecards, and other folders. 
+You can think of it like a folder that can contain flashcards, notecards, and other folders.
 
-*notepointer JSON Schema*
-
-```json
-{
-  "notepointer":{
-    "type": "string",
-    "pattern": "#/(subtopics/[0-9]{1,}/)?([0-9]{1,}/subnotes/[0-9]{1,}){1,}"
-  }
-}
-```  
-
-*topic JSON Schema* 
+*topic JSON Schema*
 
 ```json
 {
@@ -218,7 +206,7 @@ You can think of it like a folder that can contain flashcards, notecards, and ot
     "type": "object",
     "properties": {
       "topic": {
-        "description": "A note related to the topic. To be parsed as Markdown",
+        "description": "A topic. To be parsed as plain text",
         "type": "string",
         "minLength": 1
       },
@@ -237,7 +225,14 @@ You can think of it like a folder that can contain flashcards, notecards, and ot
         "description": "A list of zero or more notes or notepointers",
         "type": "array",
         "items": {
-          "$ref": "#/note"
+          "anyOf": [
+            {
+              "$ref": "#/note"
+            },
+            {
+              "$ref": "#/notepointer"
+            }
+          ]
         }
       },
       "subtopics": {
@@ -255,6 +250,17 @@ You can think of it like a folder that can contain flashcards, notecards, and ot
 }
 ```
 
+*notepointer JSON Schema*
+
+```json
+{
+  "notepointer":{
+    "type": "string",
+    "pattern": "#\/[0-9]{1,}(\/subtopics\/[0-9]{1,}){0,}(\/subnotes\/[0-9]{1,}){1}$"
+  }
+}
+```
+
 *Example topic (simplest form)*
 
 ```json
@@ -267,7 +273,7 @@ You can think of it like a folder that can contain flashcards, notecards, and ot
 
 #### *notebook*
 
-A *notebook* is just a root level *topic* node. It typically contains related, **flashcards**, **subnotes**, and **subtopics**.
+A *notebook* is just a root level *topic* node. It typically contains related **flashcards**, **subnotes**, and **subtopics**.
 
 #### *library*
 
@@ -289,7 +295,7 @@ A *library* is just a collection (list) of *notebooks*
 
 ### Markdown
 
-Notes, questions, and answers are written in Markdown as defined in the [CommonMark Specification](http://spec.commonmark.org/). Markdown has the advantage over HTML of being easily human readable and writeable. Plenty of open source libraries are available for converting markdown to HTML and other document formats. There are also open source WYSIWYG Markdown editors that can be used so end users don't even have to use Markdown directly.  
+Notes, questions, and answers are written in Markdown as defined in the [CommonMark Specification](http://spec.commonmark.org/). Markdown has the advantage over HTML of being easily human readable and writeable. Plenty of open source libraries are available for converting markdown to HTML and other document formats. There are also open source WYSIWYG Markdown editors that can be used so end users don't even have to use Markdown directly.
 
 The use of some Markdown elements in subnotes are discouraged, but not prohibited. The follow is a partial list of such elements and the reasons they should be avoided. *(Still not sure if they should be prohibited, not required to be supported, or just discouraged, TBD)*
 
@@ -301,31 +307,31 @@ The use of some Markdown elements in subnotes are discouraged, but not prohibite
 
 * Add spaced repetition support (need to figure out if data should go in flashcards or be in one space under the notebook) 
 * Check notepointer pattern
-* Use more conventional conventions, checkout RFC 2119 
-* Add more examples for flashcards, notes, and topics
+* Use more conventional conventions, checkout RFC 2119
+* Add more complex examples for flashcards, notes, and topics
 * Add possible HTML outputs for example questions/flashcards, notes, and topics
 * Create a complete JSON Schema
 * How are images going to be handled?
 
---- 
+---
 
 ## Extensions
 
 Subnotes core spec should stay simple and comply with the other specs it is based on, but it should also be extensible. Extensions will probably come in three types, listed below with examples.
- 
-1. Extensions for Nodes and Libraries  
+
+1. Extensions for Nodes and Libraries
    (Additional metadata, name/value pairs, maybe use JSON Schema, but not sure yet how that would integrate with core spec JSON schema. Some of these could make their way into core spec.)
    * Reference/citations for notebooks and notes
    * regular expression answers for flashcards to facilitate automated testing
-   * Different "types" for *note* nodes. A "definition" *note* could facilitate dynamic generation of *flashcards* and glossaries using the *note*'s **topic** and **note** fields  
-2. Extensions for Markdown  
+   * Different "types" for *note* nodes. A "definition" *note* could facilitate dynamic generation of *flashcards* and glossaries using the *note*'s **topic** and **note** fields
+2. Extensions for Markdown
    (Should be existing markdown extensions that are commonly used and well supported by markdown libraries.)
    * LaTex/Tex for displaying math
    * Tables
-3. Extensions for Spaced Repetition  
+3. Extensions for Spaced Repetition
    (Most likely just different types of scheduling algorithms.)
    * SM-2 (SuperMemo 2)
- 
+
 ### Todo
 * Expand, refine
 * Decide how to handle node/library, and spaced repetition extensions in existing JSON Schema
